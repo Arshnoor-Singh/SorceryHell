@@ -1,0 +1,37 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class EnemyBase : MonoBehaviour
+{
+    public float enemySpeed;
+    public float enemyCurrentHealth;
+    public float enemyDamage;
+    public float enemySize;
+    public Transform enemyTarget;
+
+    public float rotationSpeed = 1f;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        // Method 1 - Easy Method
+        //transform.LookAt(enemyTarget);
+
+        transform.position = transform.position + (transform.forward * enemySpeed * Time.deltaTime);
+
+        // Method 2 - Manually doing the Mathematics
+        // STEP 1 -  Calculate the direction from the character to the target
+        Vector3 direction = enemyTarget.position - transform.position;
+        // STEP 2 - Calculate the rotation needed to look in that direction
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        // STEP 3 - Apply the rotation to the character
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+    }
+}
