@@ -7,16 +7,48 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     Vector2 movementValues = Vector2.zero;
+    Vector2 lookingValues = Vector2.zero;
+
+    public GameObject bulletPrefab;
+
+    public float lookSpeed = 2f;
     public float frameDistance = 100f;
+
+    //public float shootingFrequency = 1f;
+    //public float shootTimer = 0f;
 
     public void IAAccelerate(InputAction.CallbackContext context)
     {
         movementValues = context.ReadValue<Vector2>();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void IALooking(InputAction.CallbackContext context)
     {
+        lookingValues = context.ReadValue<Vector2>();
+        Debug.Log(lookingValues);
+
+        transform.Rotate(transform.up, lookingValues.x * Time.deltaTime * lookSpeed);
+    }
+
+    public void IAShoot(InputAction.CallbackContext context)
+    {
+        Shoot();
+    }
+
+    void FixedUpdate()
+    {
+        // 
+        //Following lines are for an auto shooter
+        //
+
+        //shootTimer += 0.02f;
+        //if(shootTimer >= shootingFrequency)
+        //{
+        //    shootTimer = 0f;
+        //    CodeToSpawnBullets;
+        //}
+
+
 
     }
 
@@ -24,5 +56,10 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         transform.Translate(movementValues.x * frameDistance * Time.deltaTime, 0, movementValues.y * frameDistance * Time.deltaTime);
+    }
+
+    public void Shoot()
+    {
+        Instantiate(bulletPrefab, transform.position + transform.forward, Quaternion.Euler(transform.forward));
     }
 }
