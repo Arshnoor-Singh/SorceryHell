@@ -6,9 +6,6 @@ public class EnemyBase : MonoBehaviour
 {
     private float distanceToPlayer;
     public float enemySpeed;
-    public float enemyCurrentHealth;
-    public float enemyDamage;
-    public float enemySize;
     public Transform targetPlayer;
 
     public float rotationSpeed = 1f;

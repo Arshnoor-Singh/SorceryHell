@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 1877274123912748249}
   - component: {fileID: 3905479042081852324}
   - component: {fileID: 6102182059341954264}
+  - component: {fileID: 6975272162237893886}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Beam Mage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fd34f386104a676458ab4a41e3a9e210, type: 2}
+  - {fileID: 2100000, guid: 8d253d29a1378cd4b907a624b1d8b0ba, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -153,6 +154,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: ab346913-880a-4b1a-97cf-e947b9b12a72
     m_ActionName: PlayerGroundMovement/Looking[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 32cc7811-03dc-46e8-9d5d-ac6bf1173bdc
+    m_ActionName: PlayerGroundMovement/Shoot[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerGroundMovement
@@ -170,8 +175,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa777f83d791feb4e940d3f4dad538d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 8681352560605903855, guid: 1bf44d8373c68c64f8b5583343d1ee04, type: 3}
   lookSpeed: 2
   frameDistance: 5
+--- !u!114 &6975272162237893886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6467857183934198695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a2b38669492144ca5713d12bcc84c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  damage: 10
 --- !u!1 &6513285073399172561
 GameObject:
   m_ObjectHideFlags: 0

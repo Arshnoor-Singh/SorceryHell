@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
 
     public GameObject bulletPrefab;
 
+    public Vector3 lookDirection;
     public float lookSpeed = 2f;
     public float frameDistance = 100f;
 
@@ -55,11 +56,14 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        lookDirection = transform.forward;
         transform.Translate(movementValues.x * frameDistance * Time.deltaTime, 0, movementValues.y * frameDistance * Time.deltaTime);
     }
 
     public void Shoot()
     {
-        Instantiate(bulletPrefab, transform.position + transform.forward, Quaternion.Euler(transform.forward));
+        GameObject spawnedBullet;
+        spawnedBullet =  Instantiate(bulletPrefab, transform.position + transform.forward, Quaternion.Euler(lookDirection));
+        spawnedBullet.transform.rotation = Quaternion.Euler(lookDirection);
     }
 }
