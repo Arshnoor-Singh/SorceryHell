@@ -11,12 +11,10 @@ public class PlayerMovement : MonoBehaviour
 
     public GameObject bulletPrefab;
 
-    public Vector3 lookDirection;
     public float lookSpeed = 2f;
     public float frameDistance = 100f;
 
-    //public float shootingFrequency = 1f;
-    //public float shootTimer = 0f;
+    HealthAndDamage hdComponent;
 
     public void IAAccelerate(InputAction.CallbackContext context)
     {
@@ -33,7 +31,15 @@ public class PlayerMovement : MonoBehaviour
 
     public void IAShoot(InputAction.CallbackContext context)
     {
-        Shoot();
+        if(context.started == true)
+        {
+            Shoot();
+        }
+    }
+
+    private void Awake()
+    {
+        hdComponent = gameObject.GetComponent<HealthAndDamage>();
     }
 
     void FixedUpdate()
@@ -56,14 +62,16 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        lookDirection = transform.forward;
         transform.Translate(movementValues.x * frameDistance * Time.deltaTime, 0, movementValues.y * frameDistance * Time.deltaTime);
     }
 
     public void Shoot()
     {
         GameObject spawnedBullet;
-        spawnedBullet =  Instantiate(bulletPrefab, transform.position + transform.forward, Quaternion.Euler(lookDirection));
-        spawnedBullet.transform.rotation = Quaternion.Euler(lookDirection);
+        Vector3 direction = (transform.forward * 100f) - transform.position;
+        spawnedBullet = Instantiate(bulletPrefab, transform.position + transform.forward, Quaternion.identity);
+        spawnedBullet.GetComponent<BaseBulletBehavior>().SetBulletDirection(direction);
+
+        spawnedBullet.GetComponent<BaseBulletBehavior>().bulletDamage = hdComponent.damage;
     }
 }

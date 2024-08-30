@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -732,6 +731,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6102182059341954264, guid: 66298f0672c1cb2409da9607b24e15c6, type: 3}
+      propertyPath: lookSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6102182059341954264, guid: 66298f0672c1cb2409da9607b24e15c6, type: 3}
       propertyPath: bulletPrefab
       value: 
       objectReference: {fileID: 8681352560605903855, guid: 1bf44d8373c68c64f8b5583343d1ee04, type: 3}
@@ -793,7 +796,7 @@ MonoBehaviour:
   enemyToSpawn: {fileID: 4567362225110928085, guid: 5a0789f8a5f372b4c8ca3124f1326462, type: 3}
   maxSpawnRadius: 20
   minSpawnRadius: 40
-  enemySpawnFrequency: 0.1
+  enemySpawnFrequency: 5
   spawnTimer: 0
 --- !u!4 &1712588205
 Transform:

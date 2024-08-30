@@ -178,6 +178,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 8681352560605903855, guid: 1bf44d8373c68c64f8b5583343d1ee04, type: 3}
   lookSpeed: 2
   frameDistance: 5
+  hdComponent: {fileID: 6975272162237893886}
 --- !u!114 &6975272162237893886
 MonoBehaviour:
   m_ObjectHideFlags: 0

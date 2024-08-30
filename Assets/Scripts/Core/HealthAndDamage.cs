@@ -17,6 +17,7 @@ public class HealthAndDamage : MonoBehaviour
 
     public void Death()
     {
-
+        Debug.Log("Health less than 0. Destroying Game Object");
+        Destroy(gameObject);
     }
 }
