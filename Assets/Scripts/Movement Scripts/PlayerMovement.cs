@@ -6,15 +6,18 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    Vector2 movementValues = Vector2.zero;
-    Vector2 lookingValues = Vector2.zero;
+    private Vector2 movementValues = Vector2.zero;
+    private Vector2 lookingValues = Vector2.zero;
 
     public GameObject bulletPrefab;
-
-    public float lookSpeed = 2f;
     public float frameDistance = 100f;
 
-    HealthAndDamage hdComponent;
+    private HealthAndDamage hdComponent;
+
+    public Vector3 hitLocation;
+
+    public bool canShoot = true;
+    public float shootingCooldownTimer = 0.5f;
 
     public void IAAccelerate(InputAction.CallbackContext context)
     {
@@ -24,14 +27,11 @@ public class PlayerMovement : MonoBehaviour
     public void IALooking(InputAction.CallbackContext context)
     {
         lookingValues = context.ReadValue<Vector2>();
-        Debug.Log(lookingValues);
-
-        transform.Rotate(transform.up, lookingValues.x * Time.deltaTime * lookSpeed);
     }
 
     public void IAShoot(InputAction.CallbackContext context)
     {
-        if(context.started == true)
+        if (context.started == true)
         {
             Shoot();
         }
@@ -39,39 +39,68 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        hdComponent = gameObject.GetComponent<HealthAndDamage>();
+        hdComponent = GetComponent<HealthAndDamage>();
     }
 
     void FixedUpdate()
     {
-        // 
-        //Following lines are for an auto shooter
-        //
-
-        //shootTimer += 0.02f;
-        //if(shootTimer >= shootingFrequency)
-        //{
-        //    shootTimer = 0f;
-        //    CodeToSpawnBullets;
-        //}
-
-
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(movementValues.x * frameDistance * Time.deltaTime, 0, movementValues.y * frameDistance * Time.deltaTime);
+        // movement
+        // The reason I'm using this method is because transform.translate moves the player relative to its position and rotation.
+        // This method moves the player relative to its position and does not take rotation into account
+        // I find this method to be better during gameplay
+        transform.position += new Vector3(movementValues.x * frameDistance * Time.deltaTime, 0, movementValues.y * frameDistance * Time.deltaTime);
+
+        // Check where the mouse is pointing
+        ProjectMouseToWorld();
+        // Look at the mouse pointer
+        transform.LookAt(hitLocation);
+    }
+
+    private void ProjectMouseToWorld()
+    {
+        Ray r = Camera.main.ScreenPointToRay(lookingValues);
+
+        Plane playerPlane = new Plane(Vector3.up, transform.position);
+
+        float entryDistance;
+
+        if (playerPlane.Raycast(r, out entryDistance))
+        {
+            hitLocation = r.GetPoint(entryDistance);
+        }
+
+        Debug.DrawLine(Camera.main.transform.position, hitLocation, Color.blue, 1);
     }
 
     public void Shoot()
     {
-        GameObject spawnedBullet;
-        Vector3 direction = (transform.forward * 100f) - transform.position;
-        spawnedBullet = Instantiate(bulletPrefab, transform.position + transform.forward, Quaternion.identity);
-        spawnedBullet.GetComponent<BaseBulletBehavior>().SetBulletDirection(direction);
+        if (!canShoot)
+        {
+            return;
+        }
 
+        GameObject spawnedBullet;
+        Vector3 direction = (hitLocation - transform.position).normalized;
+        spawnedBullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        spawnedBullet.GetComponent<BaseBulletBehavior>().SetBulletDirection(direction);
         spawnedBullet.GetComponent<BaseBulletBehavior>().bulletDamage = hdComponent.damage;
+
+        canShoot = false;
+        StartCoroutine(ShootingCooldown(shootingCooldownTimer));
+    }
+
+    // Coroutine to destroy the bullet after a specified number of seconds
+    IEnumerator ShootingCooldown(float seconds)
+    {
+        // Waits for the specified number of seconds
+        yield return new WaitForSeconds(seconds);
+
+        canShoot = true;
     }
 }
