@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,6 +19,9 @@ public class PlayerMovement : MonoBehaviour
 
     public bool canShoot = true;
     public float shootingCooldownTimer = 0.5f;
+
+    public static PlayerMovement Instance;
+
 
     public void IAAccelerate(InputAction.CallbackContext context)
     {
@@ -39,6 +43,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        if(instance == null && instance != this)
+        {
+            instance = this;
+        }
         hdComponent = GetComponent<HealthAndDamage>();
     }
 
@@ -93,6 +101,11 @@ public class PlayerMovement : MonoBehaviour
 
         canShoot = false;
         StartCoroutine(ShootingCooldown(shootingCooldownTimer));
+    }
+
+    public void PlayerMovementDamageTakenSignal(float damage)
+    {
+        Debug.Log("Player Damage Signal");
     }
 
     // Coroutine to destroy the bullet after a specified number of seconds

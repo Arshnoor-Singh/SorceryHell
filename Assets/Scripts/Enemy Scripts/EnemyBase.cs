@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
-    private float distanceToPlayer;
+    public float distanceToPlayer;
     public float enemySpeed;
     public Transform targetPlayer;
 

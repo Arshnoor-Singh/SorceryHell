@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class HealthAndDamage : MonoBehaviour
@@ -6,31 +7,55 @@ public class HealthAndDamage : MonoBehaviour
     public float health = 100f;
     public float damage = 10f;
 
-    delegate void MoreDrama();
-    delegate void DamageTakenDelegate(float drama);
+    private PlayerMovement movementComponent;
+    private PlayerUI uiComponent;
 
-    DamageTakenDelegate delegate_DamageTaken;
-    MoreDrama Monkey;
+    // Commented out because the actual work is happening from the function
+    //public delegate void DEL_OneFloatParameter(float damageTaken);
+    //public DEL_OneFloatParameter del_DamageTaken;
+
+    private void Awake()
+    {
+        movementComponent = GetComponent<PlayerMovement>();
+        if(movementComponent != null )
+        {
+            uiComponent = GetComponent<PlayerUI>();
+        }
+        else
+        {
+
+        }
+
+    }
 
     private void Start()
     {
-        delegate_DamageTaken = AcceptDamage;
-        Monkey = Death;
+        // Commented out because the actual work is happening from the function
+        //del_DamageTaken += movementComponent.PlayerMovementDamageTakenSignal;
+        //del_DamageTaken += uiComponent.UIDamageTakenSignal; 
     }
 
     public void AcceptDamage(float incomingDamage)
     {
-        health = health - incomingDamage;
+        // Commented out because the actual work is happening from the function
+        //del_DamageTaken?.Invoke(incomingDamage);
+
+        health -= incomingDamage;
+
+        if (movementComponent != null)
+        {
+            movementComponent.PlayerMovementDamageTakenSignal(incomingDamage);
+        }
+
+        if(uiComponent != null) 
+        {
+            uiComponent.UpdateHealthBar(GetHealthRatio());
+        }
 
         if(health < 0 )
         {
             Death();
         }
-    }
-
-    private void SomeRandomFunction()
-    {
-
     }
 
     public void Death()
@@ -43,6 +68,4 @@ public class HealthAndDamage : MonoBehaviour
     {
         return health / maxHealth;
     }
-
-
 }
