@@ -28,4 +28,9 @@ public class EnemyBase : MonoBehaviour
         // STEP 3 - Apply the rotation to the character
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
+
+    private void OnDestroy()
+    {
+        //Instantiate(xpobject, transform.position, transform.rotation);
+    }
 }
