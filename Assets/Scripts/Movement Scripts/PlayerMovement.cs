@@ -43,9 +43,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        if(instance == null && instance != this)
+        if(Instance == null && Instance != this)
         {
-            instance = this;
+            Instance = this;
         }
         hdComponent = GetComponent<HealthAndDamage>();
     }

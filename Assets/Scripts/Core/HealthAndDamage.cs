@@ -52,7 +52,7 @@ public class HealthAndDamage : MonoBehaviour
             uiComponent.UpdateHealthBar(GetHealthRatio());
         }
 
-        if(health < 0 )
+        if(health <= 0 )
         {
             Death();
         }
