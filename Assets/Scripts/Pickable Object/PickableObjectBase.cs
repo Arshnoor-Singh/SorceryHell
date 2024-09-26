@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PickableObjectBase : MonoBehaviour
 {
+    public bool willDestroyAfterPickup = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,9 +19,19 @@ public class PickableObjectBase : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject == PlayerMovement.Instance.gameObject)
+        TriggerResponse(other);
+
+        if(willDestroyAfterPickup)
         {
-            PlayerMovement.Instance.xp += 5;
+            Destroy(gameObject);
+        }
+    }
+
+    public virtual void TriggerResponse(Collider _other)
+    {
+        if (_other.gameObject == PlayerMovement.Instance.gameObject)
+        {
+            Debug.Log("PickUpDetected at base script");
         }
     }
 }

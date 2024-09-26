@@ -109,6 +109,38 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("Player Damage Signal");
     }
 
+    public void HealthPickUp(float healthAmount)
+    {
+        if(hdComponent.health >= hdComponent.maxHealth)
+        {
+            return;
+        }
+        else
+        {
+            Debug.Log("Health Picked Up");
+
+            hdComponent.health += healthAmount;
+            if(hdComponent.health > hdComponent.maxHealth)
+            {
+                hdComponent.health = hdComponent.maxHealth;
+            }
+        }
+    }
+
+    public bool CanPickUpHealth()
+    {
+        if(hdComponent.health >= hdComponent.maxHealth)
+        {
+            Debug.Log("Cannot Pickup Health");
+            return false;
+        }
+        else
+        {
+            Debug.Log("Can Pick Up Health");
+            return true;
+        }
+    }
+
     // Coroutine to destroy the bullet after a specified number of seconds
     IEnumerator ShootingCooldown(float seconds)
     {
