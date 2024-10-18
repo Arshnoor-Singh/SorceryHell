@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 460dca3d8230e884a8b3687e007ea840, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -180,6 +180,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.73
+--- !u!1 &4277957495628519024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3155265734834163125}
+  m_Layer: 0
+  m_Name: Muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3155265734834163125
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4277957495628519024}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.000000059604645, y: 0.46, z: 1.23}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4495164439390156761}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4557508230127923366
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,6 +249,7 @@ Transform:
   m_Children:
   - {fileID: 3468380114117155294}
   - {fileID: 6933245237637948894}
+  - {fileID: 3155265734834163125}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &216534934344826150
@@ -305,11 +337,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa777f83d791feb4e940d3f4dad538d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 8681352560605903855, guid: 1bf44d8373c68c64f8b5583343d1ee04, type: 3}
-  frameDistance: 1
+  bulletPrefab: {fileID: 8681352560605903855, guid: 1bf44d8373c68c64f8b5583343d1ee04,
+    type: 3}
+  playerSpeed: 100
+  muzzleLocation: {fileID: 4277957495628519024}
   hitLocation: {x: 0, y: 0, z: 0}
   canShoot: 1
   shootingCooldownTimer: 0.5
+  xp: 0
+  muzzleFlashVFX: {fileID: 1743301284569550, guid: ad2ab49d0a2a17148bd51c93d977bdbc,
+    type: 3}
 --- !u!114 &2162305619396475935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,7 +359,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: f4eb5d579078051448fce7dd7f0dfc20, type: 3}
+  m_Actions: {fileID: -944628639613478452, guid: f4eb5d579078051448fce7dd7f0dfc20,
+    type: 3}
   m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:

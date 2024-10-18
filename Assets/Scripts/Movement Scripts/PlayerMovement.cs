@@ -4,17 +4,20 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.ParticleSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
     private Vector2 movementValues = Vector2.zero;
     private Vector2 lookingValues = Vector2.zero;
+    private ParticleSystem muzzleParticleSystem;
 
     public GameObject bulletPrefab;
     public float playerSpeed = 100f;
 
     private HealthAndDamage hdComponent;
 
+    public GameObject muzzleLocation;
     public Vector3 hitLocation;
 
     public bool canShoot = true;
@@ -23,6 +26,8 @@ public class PlayerMovement : MonoBehaviour
     public static PlayerMovement Instance;
 
     public float xp;
+
+    public GameObject muzzleFlashVFX;
 
     public void IAAccelerate(InputAction.CallbackContext context)
     {
@@ -42,6 +47,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void IAPause(InputAction.CallbackContext context) 
+    {
+        PauseMenuManager.Instance.ToggleGamePause();
+    }
+
     private void Awake()
     {
         if(Instance == null && Instance != this)
@@ -49,6 +59,12 @@ public class PlayerMovement : MonoBehaviour
             Instance = this;
         }
         hdComponent = GetComponent<HealthAndDamage>();
+
+        GameObject muzzleVFXObject = Instantiate(muzzleFlashVFX, muzzleLocation.transform.position, transform.rotation);
+        muzzleParticleSystem = muzzleVFXObject.GetComponent<ParticleSystem>();
+        muzzleParticleSystem.Stop();
+
+        muzzleVFXObject.transform.SetParent(transform);
     }
 
     void FixedUpdate()
@@ -96,12 +112,18 @@ public class PlayerMovement : MonoBehaviour
 
         GameObject spawnedBullet;
         Vector3 direction = (hitLocation - transform.position).normalized;
-        spawnedBullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        spawnedBullet = Instantiate(bulletPrefab, muzzleLocation.transform.position, Quaternion.identity);
         spawnedBullet.GetComponent<BaseBulletBehavior>().SetBulletDirection(direction);
         spawnedBullet.GetComponent<BaseBulletBehavior>().bulletDamage = hdComponent.damage;
 
         canShoot = false;
         StartCoroutine(ShootingCooldown(shootingCooldownTimer));
+        
+        EmitParams emitParams = new EmitParams();
+        emitParams.position = muzzleLocation.transform.position;
+        emitParams.startLifetime = 1f;
+
+        muzzleParticleSystem.Emit(emitParams, 2);
     }
 
     public void PlayerMovementDamageTakenSignal(float damage)

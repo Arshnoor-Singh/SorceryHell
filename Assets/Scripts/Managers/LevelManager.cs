@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class LevelManager : MonoBehaviour
 {
+    public static LevelManager Instance;
+
     public Transform player;
     public GameObject enemyToSpawn;
 
@@ -18,10 +21,26 @@ public class LevelManager : MonoBehaviour
     /// <summary>
     /// The variable enemySpawnFrequency refers to how many times per second are we going to spawn an enemy
     /// </summary>
-    public float enemySpawnFrequency = 1f;
+    public float enemySpawnFrequency = 1f;  
     public float spawnTimer = 0f;
 
     private int score;
+
+    public ParticleSystem bloodParticlesPrefab;
+    private ParticleSystem spawnedBloodParticleSysytem;
+
+    private void Awake()
+    {
+        if (Instance == null && Instance != this)
+        {
+            Instance = this;
+        }
+    }
+
+    private void Start()
+    {
+        spawnedBloodParticleSysytem = Instantiate(bloodParticlesPrefab);
+    }
 
     // Update is called once per frame
     void Update()
@@ -56,5 +75,15 @@ public class LevelManager : MonoBehaviour
 
         spawnedEnemy = Instantiate(enemyToSpawn, enemySpawnPosition, Quaternion.identity);
         spawnedEnemy.GetComponent<EnemyBase>().targetPlayer = player;
+    }
+
+    public void SpawnBloodParticleAtLocation(Vector3 Location)
+    {
+        Debug.Log("Request received to spawn a particle at location = " + Location);
+        
+        EmitParams bloodEmitParams = new EmitParams();
+        bloodEmitParams.position = Location;
+
+        spawnedBloodParticleSysytem.Emit(bloodEmitParams, 2);
     }
 }
