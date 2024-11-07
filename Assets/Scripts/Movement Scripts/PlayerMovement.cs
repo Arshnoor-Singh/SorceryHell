@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 using static UnityEngine.ParticleSystem;
 
 public class PlayerMovement : MonoBehaviour
@@ -11,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 movementValues = Vector2.zero;
     private Vector2 lookingValues = Vector2.zero;
     private ParticleSystem muzzleParticleSystem;
+    private bool isMoving;
 
     public GameObject bulletPrefab;
     public float playerSpeed = 100f;
@@ -29,9 +31,26 @@ public class PlayerMovement : MonoBehaviour
 
     public GameObject muzzleFlashVFX;
 
+    public AudioSource gunshotAudioSource;
+    public AudioSource footstepsAudioSource;
+
     public void IAAccelerate(InputAction.CallbackContext context)
     {
         movementValues = context.ReadValue<Vector2>();
+
+        if(context.started == true)
+        {
+            Debug.Log("Context Started" + context.started);
+
+            UpdateFootStepSound(true);
+        }
+        
+        if(context.canceled == true)
+        {
+            Debug.Log("Context Stop" + context.canceled);
+
+            UpdateFootStepSound(false);
+        }
     }
 
     public void IALooking(InputAction.CallbackContext context)
@@ -124,6 +143,8 @@ public class PlayerMovement : MonoBehaviour
         emitParams.startLifetime = 1f;
 
         muzzleParticleSystem.Emit(emitParams, 2);
+
+        gunshotAudioSource.Play();
     }
 
     public void PlayerMovementDamageTakenSignal(float damage)
@@ -160,6 +181,18 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log("Can Pick Up Health");
             return true;
+        }
+    }
+
+    public void UpdateFootStepSound(bool isStarting)
+    {
+        if(isStarting == true)
+        {
+            footstepsAudioSource.Play();
+        }
+        else
+        {
+            footstepsAudioSource.Stop();
         }
     }
 
